@@ -1,0 +1,12 @@
+
+# -- --------------------------------------------------------------------------------------------------- -- #
+# -- project: data visualization codes for python                                                        -- #
+# -- file: requirements.txt / libraries and dependencies for the project                                 -- #
+# -- author: FranciscoME                                                                                 -- #
+# -- license: GPL-3.0 License                                                                            -- #
+# -- repository: https://github.com/IFFranciscoME/p_data_visualization                                   -- #
+# -- --------------------------------------------------------------------------------------------------- -- #
+
+
+plotly~=4.8.2
+numpy~=1.19.0
