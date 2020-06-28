@@ -35,22 +35,22 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
 
     Debugging
     ---------
-    p_x = []
-    p_y1 = []
-    p_y2 = []
-    p_theme = tema_base
+    p_x = {'data':[], 'x_ticks':5}
+    p_y0 = {'data':[], 'color':'#ABABAB', 'type': 'dash', 'size': 1.5, 'n_ticks':5}
+    p_y1 = {'data':[], 'color':'#ABABAB', 'type': 'dash', 'size': 1.5, 'n_ticks':5}
+    p_theme = {'color_1': '#ABABAB', 'color_2': '#ABABAB', 'font_size_1': 12, 'font_size_2': 16}
     p_dims = {'width': 480, 'heigth': 480}
 
     """
 
-    # Determinar los valores y los textos para el eje y0
-    y0_ticks_n = 5
+    # data values and labels for y0
+    y0_ticks_n = p_y0['n_ticks']
     y0_ticks_vals = np.arange(min(p_y0), max(p_y0), (max(p_y0) - min(p_y0)) / y0_ticks_n)
     y0_ticks_vals = np.append(y0_ticks_vals, max(p_y0))
     y0_ticks_text = [str("%.4f" % i) for i in y0_ticks_vals]
 
-    # Determinar los valores y los textos para el eje y1
-    y1_ticks_n = 5
+    # data values and labels for y1
+    y1_ticks_n = p_y1['n_ticks']
     y1_ticks_vals = np.arange(min(p_y1), max(p_y1), (max(p_y1) - min(p_y1)) / y1_ticks_n)
     y1_ticks_vals = np.append(y1_ticks_vals, max(p_y1))
     y1_ticks_text = [str("%.4f" % i) for i in y1_ticks_vals]
@@ -58,17 +58,15 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
     # figure object
     fig_g_lineas = go.Figure()
 
-    # add first series
+    # add first series (y0)
     fig_g_lineas.add_trace(
         go.Scatter(y=p_y0, name="Serie original",
-                   line=dict(color=p_theme['color_linea_1'],
-                             width=p_theme['tam_linea_2'])))
+                   line=dict(color=p_y0['color'], width=p_y0['size'], dash=p_y0['type'])))
 
-    # add second series
+    # add second series (y1)
     fig_g_lineas.add_trace(
         go.Scatter(y=p_y1, name="Serie patron encontrado", yaxis="y2",
-                   line=dict(color=p_theme['color_linea_2'],
-                             width=p_theme['tam_linea_2'], dash='dash')))
+                   line=dict(color=p_y1['color'], width=p_y1['size'], dash=p_y1['type'])))
 
     # general layout
     fig_g_lineas.update_layout(
@@ -78,24 +76,23 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
 
         # first y axis modifications (left)
         yaxis=dict(tickvals=y0_ticks_vals, ticktext=y0_ticks_text, zeroline=False, automargin=True,
-                   showgrid=True, tickfont=dict(color=p_theme['color_linea_1'],
-                                                size=p_theme['tam_texto_ejes'])),
+                   showgrid=True, tickfont=dict(color=p_theme['color_1'],
+                                                size=p_theme['font_size_1'])),
         # second y axis modifications (right)
         yaxis2=dict(tickvals=y1_ticks_vals, ticktext=y1_ticks_text, zeroline=False, automargin=True,
-                    showgrid=True, tickfont=dict(color=p_theme['color_linea_2'],
-                                                 size=p_theme['tam_texto_ejes']),
+                    showgrid=True, tickfont=dict(color=p_theme['color_1'],
+                                                 size=p_theme['font_size_1']),
 
                     overlaying="y", side="right"))
 
     # layout for the legend
-    fig_g_lineas.update_layout(
-        legend=go.layout.Legend(x=.2, y=-.2, font=dict(size=p_theme['tam_texto_leyenda'],
-                                                       color=p_theme['color_texto_leyenda'])),
-        legend_orientation="h")
+    fig_g_lineas.update_layout(legend_orientation="h",
+                               legend=go.layout.Legend(x=.2, y=-.2, font=dict(size=p_theme['font_size_1'],
+                                                                              color=p_theme['color_1'])))
 
     # margin modification
     fig_g_lineas.update_layout(autosize=False, width=1240, height=400, paper_bgcolor="white",
-                               margin=go.layout.Margin(l=55, r=65, b=5, t=5, pad=1))
+                               margin=go.layout.Margin(l=50, r=50, b=50, t=50, pad=1))
 
     # text anotations
     fig_g_lineas.update_layout(annotations=[
@@ -103,13 +100,13 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
         # first series name
         go.layout.Annotation(x=0, y=0.35, text="Serie Original", textangle=-90,
                              xref="paper", yref="paper", showarrow=False,
-                             font=dict(size=p_theme['tam_texto_grafica'],
-                                       color=p_theme['color_linea_1'])),
+                             font=dict(size=p_theme['font_size_1'],
+                                       color=p_theme['color_1'])),
         # second series name
         go.layout.Annotation(x=1, y=0.35, text="Serie Patron Encontrado", textangle=-90,
                              xref="paper", yref="paper", showarrow=False,
-                             font=dict(size=p_theme['tam_texto_grafica'],
-                                       color=p_theme['color_linea_2']))])
+                             font=dict(size=p_theme['font_size_1'],
+                                       color=p_theme['color_1']))])
 
     # format to main title
     fig_g_lineas.update_layout(margin=go.layout.Margin(l=50, r=50, b=20, t=50, pad=20),
@@ -118,7 +115,7 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
 
     # final plot dimensions
     fig_g_lineas.layout.autosize = True
-    fig_g_lineas.layout.width = p_dims['figura_1']['width']
-    fig_g_lineas.layout.height = p_dims['figura_1']['height']
+    fig_g_lineas.layout.width = p_dims['width']
+    fig_g_lineas.layout.height = p_dims['height']
 
     return fig_g_lineas

@@ -7,6 +7,5 @@
 # -- repository: https://github.com/IFFranciscoME/p_data_visualization                                   -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
-
 plotly~=4.8.2
 numpy~=1.19.0
