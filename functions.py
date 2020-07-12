@@ -1,18 +1,14 @@
 
 # -- --------------------------------------------------------------------------------------------------- -- #
 # -- project: data visualization codes for python                                                        -- #
-# -- script: visualizations.py : script with data visualization functions                                -- #
+# -- script: functions.py : script with data visualization functions                                -- #
 # -- author: FranciscoME                                                                                 -- #
 # -- license: GPL-3.0 License                                                                            -- #
 # -- repository: https://github.com/IFFranciscoME/p_data_visualization                                   -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
-
-import plotly.graph_objs as go                   # objetos de imagenes para funcion principal
-import plotly.io as pio                          # renderizador para visualizar imagenes
-import numpy as np                               # funciones numericas
-pio.renderers.default = "browser"                # render de imagenes para correr en script
-
+# -- -------------------------------------------------- PLOT: (Pending) price chart with trading signals -- #
+# -- --------------------------------------------------------------------------------------------------- -- #
 
 # -- --------------------------------------------------- PLOT: Timeseries double plot with double y-axis -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
