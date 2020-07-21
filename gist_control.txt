@@ -1,0 +1,28 @@
+
+# -- --------------------------------------------------------------------------------------------------- -- #
+# -- project: data visualization codes for python                                                        -- #
+# -- script: gist_control.txt: file for manual version control of corresponding gist of this repo        -- #
+# -- author: FranciscoME                                                                                 -- #
+# -- license: GPL-3.0 License                                                                            -- #
+# -- repository: https://github.com/IFFranciscoME/p_data_visualization                                   -- #
+# -- --------------------------------------------------------------------------------------------------- -- #
+
+# -- gist name: gist_p_data_vis
+# -- gist scope: visualizations.py
+
+# -- gist url: https://gist.githubusercontent.com/IFFranciscoME/
+# 9b7b842ed368e9118c5ef09bb9b228cf/raw/95058c472d6b91060d920fa8b98ac15ba540e55c/gist_p_data_vis
+
+# -- gist type: public
+
+# -------------------------------------------------------------------------- timestamp: 15:00 21.07.2020 -- #
+
+# Uploaded new code
+# -- g_relative_bars
+# -- g_ts_2axis
+
+# Modified code
+# -- None
+
+# Deleted code
+# -- None
