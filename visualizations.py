@@ -25,6 +25,7 @@ pio.renderers.default = "browser"
 
 def g_relative_bars(p_data_b1, p_data_b2, p_theme):
     """
+
     Generates a plot with two bars (two series of values) and two horizontal lines (medians of each
     series)
 
@@ -141,15 +142,28 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
 
     Parameters
     ----------
-    p_x : np.array : x component of the data
-    p_y0 : np.array : y1 component of the data
-    p_y1 : np.array : y2 component of the data
-    p_theme : dict : theme for the visualization
-    p_dims : dict : dimensions for the final plot (heigth, width)
+    p_x: dict
+        {data: x component to plot, x_ticks: number of ticks to show}
+
+    p_y0: dict
+        {data: y0 component to plot (left axis), color: for this data, type: line/dash/dash-dot,
+        size: for this data, n_ticks: number of ticks for this axis}
+
+    p_y1: dict
+        {data: y0 component to plot (right axis), color: for this data, type: line/dash/dash-dot,
+        size: for this data, n_ticks: number of ticks for this axis}
+
+    p_theme: dict
+        {'color_1': Color to use in plot, 'color_2': Color to use in plot, 'font_size_1': size of
+        font to use in plot, 'font_size_2': size of fonto to use in plot}
+
+    p_dims: dict
+        {'width': width in pixels, 'heigth': height in pixels}
 
     Returns
     -------
-    fig_ts_2axis : fig : resulting plot
+    fig_ts_2axis:
+        fig: plotly figure code for the resulting plot
 
     Debugging
     ---------
@@ -207,7 +221,6 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
         yaxis2=dict(tickvals=y1_ticks_vals, ticktext=y1_ticks_text, zeroline=False, automargin=True,
                     showgrid=True, tickfont=dict(color=p_theme['color_1'],
                                                  size=p_theme['font_size_1']),
-
                     overlaying="y", side="right"))
 
     # layout for the legend
