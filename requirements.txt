@@ -7,6 +7,6 @@
 # -- repository: https://github.com/IFFranciscoME/p_data_visualization                                   -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
-plotly
-numpy
-pandas
+plotly>=4.9.0
+numpy>=1.19.0
+pandas>=1.0.5

@@ -1,7 +1,7 @@
 
 # -- --------------------------------------------------------------------------------------------------- -- #
 # -- project: data visualization codes for python                                                        -- #
-# -- script: functions.py : script with data visualization functions                                     -- #
+# -- script: visualizations.py : script with data visualization functions                                -- #
 # -- author: FranciscoME                                                                                 -- #
 # -- license: GPL-3.0 License                                                                            -- #
 # -- repository: https://github.com/IFFranciscoME/p_data_visualization                                   -- #
@@ -130,6 +130,7 @@ def g_relative_bars(p_data_b1, p_data_b2, p_theme):
 
 def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
     """
+
     Time series line plot with 2 series, sharing the same x component, but with 2 separate y axis
 
     Requirements
@@ -160,16 +161,23 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
 
     """
 
+    # ensure the data type  of every entry
+    p_y0['data'] = p_y0['data'].astype(np.float64)
+    p_y1['data'] = p_y1['data'].astype(np.float64)
+    p_x['data'] = p_x['data'].astype(str)
+
     # data values and labels for y0
     y0_ticks_n = p_y0['n_ticks']
-    y0_ticks_vals = np.arange(min(p_y0), max(p_y0), (max(p_y0) - min(p_y0)) / y0_ticks_n)
-    y0_ticks_vals = np.append(y0_ticks_vals, max(p_y0))
+    y0_ticks_vals = np.arange(min(p_y0['data']), max(p_y0['data']),
+                              (max(p_y0['data']) - min(p_y0['data'])) / y0_ticks_n)
+    y0_ticks_vals = np.append(y0_ticks_vals, max(p_y0['data']))
     y0_ticks_text = [str("%.4f" % i) for i in y0_ticks_vals]
 
     # data values and labels for y1
     y1_ticks_n = p_y1['n_ticks']
-    y1_ticks_vals = np.arange(min(p_y1), max(p_y1), (max(p_y1) - min(p_y1)) / y1_ticks_n)
-    y1_ticks_vals = np.append(y1_ticks_vals, max(p_y1))
+    y1_ticks_vals = np.arange(min(p_y1['data']), max(p_y1['data']),
+                              (max(p_y1['data']) - min(p_y1['data'])) / y1_ticks_n)
+    y1_ticks_vals = np.append(y1_ticks_vals, max(p_y1['data']))
     y1_ticks_text = [str("%.4f" % i) for i in y1_ticks_vals]
 
     # figure object
@@ -177,19 +185,19 @@ def g_ts_2axis(p_x, p_y0, p_y1, p_theme, p_dims):
 
     # add first series (y0)
     fig_g_lineas.add_trace(
-        go.Scatter(y=p_y0, name="Serie original",
+        go.Scatter(y=p_y0['data'], name="Serie original",
                    line=dict(color=p_y0['color'], width=p_y0['size'], dash=p_y0['type'])))
 
     # add second series (y1)
     fig_g_lineas.add_trace(
-        go.Scatter(y=p_y1, name="Serie patron encontrado", yaxis="y2",
+        go.Scatter(y=p_y1['data'], name="Serie patron encontrado", yaxis="y2",
                    line=dict(color=p_y1['color'], width=p_y1['size'], dash=p_y1['type'])))
 
     # general layout
     fig_g_lineas.update_layout(
 
         # x axis modifications
-        xaxis=dict(tickvals=p_x),
+        xaxis=dict(tickvals=p_x['data']),
 
         # first y axis modifications (left)
         yaxis=dict(tickvals=y0_ticks_vals, ticktext=y0_ticks_text, zeroline=False, automargin=True,
