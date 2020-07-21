@@ -23,7 +23,7 @@ pio.renderers.default = "browser"
 # -- --------------------------------------------------------------------- PLOT: Stacked Horizontal Bars -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
-def g_relative_bars(p_data_b1, p_data_b2, p_theme):
+def g_relative_bars(p_y0, p_y1, p_theme, p_dims):
     """
 
     Generates a plot with two bars (two series of values) and two horizontal lines (medians of each
@@ -37,50 +37,76 @@ def g_relative_bars(p_data_b1, p_data_b2, p_theme):
 
     Parameters
     ----------
-    p_data_b1: list : values for upper bar plot
-    p_data_b2: list : values for lower bar plot
-    p_theme: dict : with colors, sizes and format for the plot
+
+    p_y0: dict
+        values for upper bar plot
+
+        {data: y0 component to plot (left axis), color: for this data, type: line/dash/dash-dot,
+        size: for this data, n_ticks: number of ticks for this axis}
+
+    p_y1: dict
+        values for lower bar plot
+
+        {data: y0 component to plot (right axis), color: for this data, type: line/dash/dash-dot,
+        size: for this data, n_ticks: number of ticks for this axis}
+
+    p_theme: dict
+        colors and font sizes
+
+        {'color_1': '#ABABAB', 'color_2': '#ABABAB', 'color_3': '#ABABAB', 'font_color_1': '#ABABAB',
+        'font_size_1': 12, 'font_size_2': 16}
+
+    p_dims: dict
+        final dimensions of the plot as a file
+
+        {'width': width in pixels, 'heigth': height in pixels}
 
     Returns
     -------
-    fig_relative_bars: plotly : Object with plotly generating code for the plot
+    fig_relative_bars: plotly
+        Object with plotly generating code for the plot
 
     Debugging
     ---------
-    p_data_b1 = df_f_data['c2'].copy()
-    p_data_b2 = df_f_data['c16'].copy()
+    p_y0 = df_f_data['c2'].copy()
+    p_y1 = df_f_data['c16'].copy()
     p_theme = base_theme
 
     """
 
+    # list of periods for the x axis
     l_periods = pd.date_range('2017-01-01', '2020-02-28', freq='MS').strftime("%m/%y")
 
-    l_profit = p_data_b1 / 100
+    # calculations for the y axis
+    l_profit = p_y0['data'] / 100
     y_profit = np.round(np.median(l_profit), 4)
-    l_dde = p_data_b2 / 100
+    l_dde = p_y1['data'] / 100
     y_dde = np.round(np.median(l_dde), 4)
 
+    # ticks values for y axis
     y0_ticks_vals = np.arange(min(l_dde), max(l_profit), (max(l_profit) - min(l_dde)) / 10)
     y0_ticks_vals = np.append(y0_ticks_vals, max(l_profit))
     y0_ticks_vals = np.round(y0_ticks_vals, 4)
 
+    # instantiate a figure object
     fig_relative_bars = go.Figure()
 
+    # add upper bars
     fig_relative_bars.add_trace(go.Bar(name='Return (%)', x=l_periods, y=l_profit,
-                                       marker_color=p_theme['color_ganancia_1'],
-                                       marker_line_color=p_theme['color_ganancia_1'],
+                                       marker_color=p_y0['color'],
+                                       marker_line_color=p_y0['color'],
                                        marker_line_width=1.5, opacity=0.99))
-
+    # add lower bars
     fig_relative_bars.add_trace(go.Bar(name='DrawDown (%)', x=l_periods, y=l_dde,
-                                       marker_color=p_theme['color_perdida_1'],
-                                       marker_line_color=p_theme['color_perdida_1'],
+                                       marker_color=p_y1['color'],
+                                       marker_line_color=p_y1['color'],
                                        marker_line_width=1.5, opacity=0.99))
 
     # Horizontal lines
     lines = [dict(x0=0, x1=1, xref='paper', y0=y_profit, y1=y_profit, yref='y',
-                  type='line', line=dict(color=p_theme['color_ganancia_2'], width=1.5, dash='dashdot')),
+                  type='line', line=dict(color=p_theme['color_3'], width=1.5, dash='dashdot')),
              dict(x0=0, x1=1, xref='paper', y0=y_dde, y1=y_dde, yref='y',
-                  type='line', line=dict(color=p_theme['color_perdida_2'], width=1.5, dash='dashdot'))]
+                  type='line', line=dict(color=p_theme['color_3'], width=1.5, dash='dashdot'))]
 
     # Layout
     fig_relative_bars.update_layout(barmode='relative', yaxis_tickformat='.2%',
@@ -95,33 +121,42 @@ def g_relative_bars(p_data_b1, p_data_b2, p_theme):
                              text="Median Return <b> (" + str(np.round(y_profit * 100, 2)) + "%) </b>",
                              textangle=0,
                              xref="x", yref='y', showarrow=False,
-                             font=dict(size=p_theme['tam_texto_grafica'],
-                                       color=p_theme['color_ganancia_1'])),
+                             font=dict(size=p_theme['font_size_1'],
+                                       color=p_theme['color_2'])),
         go.layout.Annotation(x=36, y=y_dde * 1.2,
                              text="Median DrawDown <b>(" + str(np.round(y_dde * 100, 2)) + "%)</b>",
                              textangle=0,
                              xref="x", yref="y", showarrow=False,
-                             font=dict(size=p_theme['tam_texto_grafica'],
-                                       color=p_theme['color_perdida_2']))])
+                             font=dict(size=p_theme['font_size_1'],
+                                       color=p_theme['color_2']))])
 
-    #
+    # Update layout for the background
     fig_relative_bars.update_layout(paper_bgcolor='white',
                                     yaxis=dict(tickvals=y0_ticks_vals, zeroline=False, automargin=True,
-                                               tickfont=dict(color='grey', size=p_theme['tam_texto_ejes'])))
+                                               tickfont=dict(color='grey', size=p_theme['font_size_1'])),
+                                    xaxis=dict(tickfont=dict(color='grey', size=p_theme['font_size_1'])))
 
+    # Update layout for the y axis
     fig_relative_bars.update_yaxes(showgrid=True, gridwidth=.25, gridcolor='lightgrey')
 
-    # Formato de leyenda
+    # Legend format
     fig_relative_bars.update_layout(paper_bgcolor='white', plot_bgcolor='white',
                                     legend=go.layout.Legend(x=.41, y=-.15, orientation='h',
                                                             font=dict(size=14, color='grey')),
                                     margin=go.layout.Margin(l=50, r=50, b=50, t=50, pad=10))
 
-    fig_relative_bars.add_shape(type="rect", x0=34, y0=y_profit * 1.1, x1=38, y1=y_profit * 1.3,
-                                line=dict(color="lightgrey", width=2), fillcolor="lightgrey")
+    # Saquare in the upper text anotation
+    fig_relative_bars.add_shape(type="rect", x0=32, y0=y_profit * 1.1, x1=40, y1=y_profit * 1.3,
+                                line=dict(color=p_theme['color_3'], width=2), fillcolor=p_theme['color_3'])
 
-    fig_relative_bars.add_shape(type="rect", x0=34, y0=y_dde * 1.1, x1=38, y1=y_dde * 1.3,
-                                line=dict(color="lightgrey", width=2), fillcolor="lightgrey")
+    # Saquare in the lower text anotation
+    fig_relative_bars.add_shape(type="rect", x0=32, y0=y_dde * 1.1, x1=40, y1=y_dde * 1.3,
+                                line=dict(color=p_theme['color_3'], width=2), fillcolor=p_theme['color_3'])
+
+    # Final plot dimensions
+    fig_relative_bars.layout.autosize = True
+    fig_relative_bars.layout.width = p_dims['width']
+    fig_relative_bars.layout.height = p_dims['height']
 
     return fig_relative_bars
 

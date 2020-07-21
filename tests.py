@@ -7,17 +7,19 @@
 # -- repository: https://github.com/IFFranciscoME/p_data_visualization                                   -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
+import visualizations as vs                      # import visualizations functions
+
 import plotly.graph_objs as go                   # objetos de imagenes para funcion principal
 import plotly.io as pio                          # renderizador para visualizar imagenes
 import numpy as np                               # funciones numericas
-import visualizations as vs                      # import visualizations functions
 import pandas as pd                              # dataframes
 pio.renderers.default = "browser"                # render de imagenes para correr en script
 
 
 # ------------------------------------------------------------------------------- Load Data for Examples -- #
 
-price_data = pd.read_csv('data/USD_MXN.csv')
+price_data = pd.read_csv('data/ohlc_data.csv')
+panel_data = pd.read_csv('data/panel_data.csv')
 
 # ------------------------------------------------------------------------------------------------ Tests -- #
 
@@ -32,4 +34,13 @@ p_dims = {'width': 1080, 'height': 720}
 plot_1 = vs.g_ts_2axis(p_x=p_x, p_y0=p_y0, p_y1=p_y1, p_theme=p_theme, p_dims=p_dims)
 plot_1.show()
 
-# -- PLOT: Stacked Horizontal Bars (Test Pending) -- #
+# -- PLOT: Stacked Horizontal Bars -- #
+
+p_y0 = {'data': panel_data['dd'], 'color': 'blue', 'type': 'dash', 'size': 2.5, 'n_ticks': 5}
+p_y1 = {'data': panel_data['profit'], 'color': 'red', 'type': 'dash', 'size': 2.5, 'n_ticks': 5}
+p_theme = {'color_1': '#ABABAB', 'color_2': 'white', 'color_3': 'grey', 'font_color_1': '#ABABAB',
+           'font_size_1': 12, 'font_size_2': 16}
+p_dims = {'width': 1080, 'height': 720}
+
+plot_2 = vs.g_relative_bars(p_y0=p_y0, p_y1=p_y1, p_theme=p_theme, p_dims=p_dims)
+plot_2.show()
