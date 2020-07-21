@@ -44,3 +44,12 @@ p_dims = {'width': 1080, 'height': 720}
 
 plot_2 = vs.g_relative_bars(p_y0=p_y0, p_y1=p_y1, p_theme=p_theme, p_dims=p_dims)
 plot_2.show()
+
+# -- PLOT: OHLC Price Chart with Executed Trades -- #
+
+p_ohlc = price_data.iloc[3:32, :].reset_index(drop=True)
+p_theme = {'color_1': '#ABABAB', 'color_2': '#ABCDED', 'font_size_1': 12, 'font_size_2': 16}
+p_dims = {'width': 1080, 'height': 720}
+
+plot_3 = vs.g_ohlc(p_ohlc=p_ohlc, p_theme=p_theme, p_dims=p_dims, p_trades={})
+plot_3.show()

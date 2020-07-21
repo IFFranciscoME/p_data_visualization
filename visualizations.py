@@ -13,11 +13,97 @@ import plotly.graph_objects as go
 import plotly.io as pio
 pio.renderers.default = "browser"
 
-# -- -------------------------------------------------- PLOT: (Pending) price chart with trading signals -- #
-# -- --------------------------------------------------------------------------------------------------- -- #
-
 # -- ------------------------------------------------------ PLOT: (Pending) 4D Surface with trace points -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
+
+
+# -- --------------------------------------------- PLOT: (Pending) OHLC Price Chart with Executed Trades -- #
+# -- --------------------------------------------------------------------------------------------------- -- #
+
+def g_ohlc(p_ohlc, p_theme, p_dims, p_trades=None):
+    """
+
+    Timeseries Candlestick with OHLC prices and figures for trades indicator
+
+    Requirements
+    ------------
+    numpy
+    pandas
+    plotly
+
+    Parameters
+    ----------
+    p_ohlc: pd.DataFrame
+        debe de contener las columnas 'timestamp', 'open', 'high', 'low', 'close'
+    p_theme: dict
+        diccionario con tema de visualizaciones
+    p_dims: dict
+        diccionario con tamanos para visualizaciones
+    p_trades: dict
+        diccionario con fechas donde se ejecutaron operaciones y parametros para visualizar tales ops
+
+    Returns
+    -------
+    fig_g_ohlc: plotly
+        objeto/diccionario tipo plotly para graficar
+
+    Debugging
+    ---------
+    p_ohlc = results['ciclo_3'][0]['datos']['ConsumrgyMoM_USA_A_2015-12-15_13:30:00']
+    p_ohlc = param_ohlc['df_serie_q']
+    p_timestamp = param_ohlc['timestamp']
+    p_theme = tema_base
+    p_dims = dimensiones_base
+
+    """
+
+    # Parametros para anotacion de texto en grafica
+    f_i = p_ohlc['timestamp'][0]
+    yini = p_ohlc['high'][0]
+    yfin = max(p_ohlc['close'])
+
+    # Base de figura
+    fig_g_ohlc = go.Figure()
+
+    # Agregar capa de figura de velas japonesas (candlestick)
+    fig_g_ohlc.add_trace(
+        go.Candlestick(name='ohlc',
+                       x=p_ohlc['timestamp'],
+                       open=p_ohlc['open'],
+                       high=p_ohlc['high'],
+                       low=p_ohlc['low'],
+                       close=p_ohlc['close'],
+                       opacity=0.4))
+
+    # Layout de margen, titulos y ejes
+    fig_g_ohlc.update_layout(
+        margin=go.layout.Margin(l=50, r=50, b=20, t=50, pad=20),
+        xaxis=dict(title_text='Hora del dia', rangeslider=dict(visible=False)),
+        yaxis=dict(title_text='Precio del EurUsd'))
+
+    # Color y fuente de texto en ejes
+    fig_g_ohlc.update_layout(
+        xaxis=dict(titlefont=dict(color=p_theme['color_1']),
+                   tickfont=dict(color=p_theme['color_1'],
+                                 size=p_theme['font_size_1'])),
+        yaxis=dict(zeroline=False, automargin=True,
+                   titlefont=dict(color=p_theme['color_1']),
+                   tickfont=dict(color=p_theme['color_1'],
+                                 size=p_theme['font_size_1']),
+                   showgrid=True))
+
+    # Formato de leyenda
+    fig_g_ohlc.update_layout(
+        legend=go.layout.Legend(x=.3, y=-.15, orientation='h',
+                                font=dict(size=p_theme['font_size_1'],
+                                          color=p_theme['color_2'])))
+
+    # Formato de tamanos
+    fig_g_ohlc.layout.autosize = True
+    fig_g_ohlc.layout.width = p_dims['width']
+    fig_g_ohlc.layout.height = p_dims['height']
+
+    return fig_g_ohlc
 
 
 # -- --------------------------------------------------------------------- PLOT: Stacked Horizontal Bars -- #
