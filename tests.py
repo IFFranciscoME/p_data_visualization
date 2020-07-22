@@ -53,3 +53,5 @@ p_dims = {'width': 1080, 'height': 720}
 
 plot_3 = vs.g_ohlc(p_ohlc=p_ohlc, p_theme=p_theme, p_dims=p_dims, p_trades={})
 plot_3.show()
+
+# -- PLOT: (Pending) 4D Surface with trace points -- #
