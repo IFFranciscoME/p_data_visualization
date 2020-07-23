@@ -20,6 +20,7 @@ pio.renderers.default = "browser"                # render de imagenes para corre
 
 price_data = pd.read_csv('data/ohlc_data.csv')
 panel_data = pd.read_csv('data/panel_data.csv')
+optim_data = pd.read_csv('data/optimization_data.csv')
 
 # ------------------------------------------------------------------------------------------------ Tests -- #
 
@@ -55,3 +56,21 @@ plot_3 = vs.g_ohlc(p_ohlc=p_ohlc, p_theme=p_theme, p_dims=p_dims, p_trades={})
 plot_3.show()
 
 # -- PLOT: (Pending) 4D Surface with trace points -- #
+
+# lists with unique values for x and y
+variable_x = 'TakeProfit'
+variable_y = 'Layer_Multiplier'
+variable_z = 'Profit'
+vals = optim_data[['TakeProfit', 'Layer_Multiplier', 'Profit']]
+x_l = sorted(set(vals[variable_x]))
+y_l = sorted(set(vals[variable_y]))
+df_ss = pd.DataFrame(np.zeros((len(x_l), len(y_l))))
+df_ss.columns = x_l
+df_ss.index = y_l
+
+# find the resulting value of each x and y combination
+i = 0
+j = 0
+
+df_ss.loc[list(df_ss.columns).index(x_l[i])] = 1
+nuevo_vals = vals[vals[variable_y] == vals[variable_y][j]]
