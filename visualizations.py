@@ -73,7 +73,7 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_trades=None):
                        high=p_ohlc['high'],
                        low=p_ohlc['low'],
                        close=p_ohlc['close'],
-                       opacity=0.4))
+                       opacity=0.7))
 
     # Layout de margen, titulos y ejes
     fig_g_ohlc.update_layout(
