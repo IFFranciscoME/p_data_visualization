@@ -60,11 +60,11 @@ optim_data = pd.read_csv('data/optimization_data.csv')
 
 # -- ---------------------------------------------------------------- PLOT: Multiple TimeSeries 1 Y-axis -- #
 
-p_series = {'close': price_data['close'].iloc[0:30].reset_index(drop=True),
-            'high': price_data['high'].iloc[30:60].reset_index(drop=True),
-            'low': price_data['low'].iloc[60:90].reset_index(drop=True)}
+p_series = {'close': price_data['close'].reset_index(drop=True),
+            'high': price_data['high'].reset_index(drop=True),
+            'low': price_data['low'].reset_index(drop=True)}
 
-p_ts = price_data['timestamp'].iloc[0:30].reset_index(drop=True)
+p_ts = price_data['timestamp'].reset_index(drop=True)
 
 p_theme = {'color_1': '#ABABAB', 'color_2': '#ABCDED', 'font_size_1': 12, 'font_size_2': 16}
 p_dims = {'width': 1080, 'height': 720}

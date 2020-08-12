@@ -51,6 +51,24 @@ def g_mult_ts(p_series, p_ts, p_theme, p_dims):
 
     """
 
+    x_ticks = []
+    x_labels = []
+
+    # list of periods for the x axis
+    l_periods = pd.date_range(pd.to_datetime(p_ts.to_list()[0]),
+                              pd.to_datetime(p_ts.to_list()[-1])).strftime("%m/%y")
+
+    # # calculations for the y axis
+    # l_profit = p_y0['data'] / 100
+    # y_profit = np.round(np.median(l_profit), 4)
+    # l_dde = p_y1['data'] / 100
+    # y_dde = np.round(np.median(l_dde), 4)
+
+    # # ticks values for y axis
+    # y0_ticks_vals = np.arange(min(l_dde), max(l_profit), (max(l_profit) - min(l_dde)) / 10)
+    # y0_ticks_vals = np.append(y0_ticks_vals, max(l_profit))
+    # y0_ticks_vals = np.round(y0_ticks_vals, 4)
+
     data = []
     for name in list(p_series.keys()):
         data.append({"type": 'scatter',
@@ -68,9 +86,24 @@ def g_mult_ts(p_series, p_ts, p_theme, p_dims):
         xaxis=dict(title_text='Hora del dia', rangeslider=dict(visible=False)),
         yaxis=dict(title_text='Precio del EurUsd'))
 
-    fig_g_mult_ts.show()
+    # x tick formatting
+    fig_g_mult_ts.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=[1, 3, 5, 7, 9, 11],
+            ticktext=['One', 'Three', 'Five', 'Seven', 'Nine', 'Eleven']
+        )
+    )
 
-    return 1
+    # layout for the legend
+    fig_g_mult_ts.update_layout(legend=go.layout.Legend(x=.45, y=-.15, orientation='h',
+                                                        font=dict(size=p_theme['font_size_1'],
+                                                                  color=p_theme['color_1'])))
+
+    # debugging
+    # fig_g_mult_ts.show()
+
+    return fig_g_mult_ts
 
 
 # -- -------------------------------------------------------- PLOT: OHLC Price Chart with Vertical Lines -- #
