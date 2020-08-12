@@ -101,7 +101,7 @@ def g_mult_ts(p_series, p_ts, p_theme, p_dims):
                                                                   color=p_theme['color_1'])))
 
     # debugging
-    # fig_g_mult_ts.show()
+    fig_g_mult_ts.show()
 
     return fig_g_mult_ts
 

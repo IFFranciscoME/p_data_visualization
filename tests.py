@@ -1,4 +1,3 @@
-
 # -- --------------------------------------------------------------------------------------------------- -- #
 # -- project: data visualization codes for python                                                        -- #
 # -- file: tests.py / tests for the data visualization functions                                         -- #
@@ -9,6 +8,7 @@
 
 import visualizations as vs                      # import visualizations functions
 
+import random                                    # random number generator
 import plotly.graph_objs as go                   # objetos de imagenes para funcion principal
 import plotly.io as pio                          # renderizador para visualizar imagenes
 import numpy as np                               # funciones numericas
@@ -22,6 +22,7 @@ pio.renderers.default = "browser"                # render de imagenes para corre
 price_data = pd.read_csv('data/ohlc_data.csv')
 panel_data = pd.read_csv('data/panel_data.csv')
 optim_data = pd.read_csv('data/optimization_data.csv')
+times_data = pd.read_csv('data/timeseries_data.csv')
 
 # ------------------------------------------------------------------------------------------------ Tests -- #
 # ------------------------------------------------------------------------------------------------ ----- -- #
@@ -60,9 +61,10 @@ optim_data = pd.read_csv('data/optimization_data.csv')
 
 # -- ---------------------------------------------------------------- PLOT: Multiple TimeSeries 1 Y-axis -- #
 
-p_series = {'close': price_data['close'].reset_index(drop=True),
-            'high': price_data['high'].reset_index(drop=True),
-            'low': price_data['low'].reset_index(drop=True)}
+ts_data = np.array(times_data['cum_returns'])
+p_series = {'IteraOne': times_data['cum_returns'].reset_index(drop=True),
+            'Benchmark 1': ts_data * np.array(((np.random.randint(1, 8, len(ts_data))/100)+1)),
+            'Benchmark 2': ts_data * np.array(((np.random.randint(1, 8, len(ts_data))/100)+1))}
 
 p_ts = price_data['timestamp'].reset_index(drop=True)
 
