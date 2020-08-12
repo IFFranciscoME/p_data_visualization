@@ -50,10 +50,21 @@ optim_data = pd.read_csv('data/optimization_data.csv')
 
 # -- -------------------------------------------------------- PLOT: OHLC Price Chart with vertical lines -- #
 
-p_ohlc = price_data.iloc[3:32, :].reset_index(drop=True)
+# p_ohlc = price_data.iloc[3:32, :].reset_index(drop=True)
+# p_theme = {'color_1': '#ABABAB', 'color_2': '#ABCDED', 'font_size_1': 12, 'font_size_2': 16}
+# p_dims = {'width': 1080, 'height': 720}
+# p_vlines = [pd.to_datetime('2020-01-01 22:05:00'), pd.to_datetime('2020-01-01 22:10:00')]
+#
+# plot_3 = vs.g_ohlc(p_ohlc=p_ohlc, p_theme=p_theme, p_dims=p_dims, p_vlines=p_vlines)
+# plot_3.show()
+
+# -- ---------------------------------------------------------------- PLOT: Multiple TimeSeries 1 Y-axis -- #
+
+p_series = {'close': price_data['close'].iloc[0:30].reset_index(drop=True),
+            'high': price_data['high'].iloc[30:60].reset_index(drop=True),
+            'low': price_data['low'].iloc[60:90].reset_index(drop=True)}
+
+p_ts = price_data['timestamp'].iloc[0:30].reset_index(drop=True)
+
 p_theme = {'color_1': '#ABABAB', 'color_2': '#ABCDED', 'font_size_1': 12, 'font_size_2': 16}
 p_dims = {'width': 1080, 'height': 720}
-p_vlines = [pd.to_datetime('2020-01-01 22:05:00'), pd.to_datetime('2020-01-01 22:10:00')]
-
-plot_3 = vs.g_ohlc(p_ohlc=p_ohlc, p_theme=p_theme, p_dims=p_dims, p_vlines=p_vlines)
-plot_3.show()

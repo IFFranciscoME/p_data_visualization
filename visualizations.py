@@ -17,6 +17,62 @@ pio.renderers.default = "browser"
 # -- --------------------------------------------------------------------------------------------------- -- #
 
 
+# -- ------------------------------------------------------ PLOT: Multiple Timeseries plot with 1 Y-axis -- #
+# -- --------------------------------------------------------------------------------------------------- -- #
+
+def g_mult_ts(p_series, p_ts, p_theme, p_dims):
+    """
+    Multiple Timeseries plots with a single Y-Axis and vertical/horizontal legend
+
+    Requirements
+    ------------
+    numpy
+    pandas
+    plotly
+
+    Parameters
+    ----------
+    p_series
+    p_theme
+    p_dims
+    p_ts
+
+    Returns
+    -------
+    fig_g_mult_ts: plotly
+        objeto/diccionario tipo plotly para graficar
+
+    Debugging
+    ---------
+    p_series = p_series
+    p_ts = p_ts
+    p_theme = p_theme
+    p_dims = p_dims
+
+    """
+
+    data = []
+    for name in list(p_series.keys()):
+        data.append({"type": 'scatter',
+                     "x": p_ts,
+                     "y": p_series[name],
+                     "name": name,
+                     })
+
+    # Base de figura
+    fig_g_mult_ts = go.Figure(dict({"data": data}))
+
+    # Layout de margen, titulos y ejes
+    fig_g_mult_ts.update_layout(
+        margin=go.layout.Margin(l=50, r=50, b=20, t=50, pad=20),
+        xaxis=dict(title_text='Hora del dia', rangeslider=dict(visible=False)),
+        yaxis=dict(title_text='Precio del EurUsd'))
+
+    fig_g_mult_ts.show()
+
+    return 1
+
+
 # -- -------------------------------------------------------- PLOT: OHLC Price Chart with Vertical Lines -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
