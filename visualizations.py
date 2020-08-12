@@ -17,10 +17,10 @@ pio.renderers.default = "browser"
 # -- --------------------------------------------------------------------------------------------------- -- #
 
 
-# -- --------------------------------------------- PLOT: (Pending) OHLC Price Chart with Executed Trades -- #
+# -- -------------------------------------------------------- PLOT: OHLC Price Chart with Vertical Lines -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
-def g_ohlc(p_ohlc, p_theme, p_dims, p_trades=None):
+def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
     """
 
     Timeseries Candlestick with OHLC prices and figures for trades indicator
@@ -39,8 +39,8 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_trades=None):
         diccionario con tema de visualizaciones
     p_dims: dict
         diccionario con tamanos para visualizaciones
-    p_trades: dict
-        diccionario con fechas donde se ejecutaron operaciones y parametros para visualizar tales ops
+    p_vlines: dict
+        diccionario con fechas donde para visualizar lineas verticales
 
     Returns
     -------
@@ -49,18 +49,13 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_trades=None):
 
     Debugging
     ---------
-    p_ohlc = results['ciclo_3'][0]['datos']['ConsumrgyMoM_USA_A_2015-12-15_13:30:00']
-    p_ohlc = param_ohlc['df_serie_q']
-    p_timestamp = param_ohlc['timestamp']
+    p_ohlc = price_data
+    p_timestamp = price_data['timestamp']
     p_theme = tema_base
     p_dims = dimensiones_base
-
+    p_vlines = [pd.to_datetime('2020-01-01 22:05:00'), pd.to_datetime('2020-01-01 22:10:00'),
+                pd.to_datetime('2020-01-01 22:20:00'), pd.to_datetime('2020-01-01 22:30:00')]
     """
-
-    # Parametros para anotacion de texto en grafica
-    f_i = p_ohlc['timestamp'][0]
-    yini = p_ohlc['high'][0]
-    yfin = max(p_ohlc['close'])
 
     # Base de figura
     fig_g_ohlc = go.Figure()
@@ -102,6 +97,20 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_trades=None):
     fig_g_ohlc.layout.autosize = True
     fig_g_ohlc.layout.width = p_dims['width']
     fig_g_ohlc.layout.height = p_dims['height']
+
+    # Dynamically add vertical lines according to the provided list of x dates.
+    shapes_list = list()
+    for i in p_vlines:
+        shapes_list.append({'type': 'line', 'fillcolor': 'blue',
+                            'line': {'color': 'blue', 'dash': 'dashdot'},
+                            'x0': i, 'x1': i, 'xref': 'x',
+                            'y0': min(p_ohlc['low']), 'y1': max(p_ohlc['high']), 'yref': 'y'})
+
+    # Update layout
+    fig_g_ohlc.update_layout(shapes=shapes_list)
+
+    # Show picture for debugging
+    fig_g_ohlc.show()
 
     return fig_g_ohlc
 
