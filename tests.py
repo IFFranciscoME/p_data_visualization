@@ -17,14 +17,16 @@ pio.renderers.default = "browser"                # render de imagenes para corre
 
 
 # ------------------------------------------------------------------------------- Load Data for Examples -- #
+# ------------------------------------------------------------------------------- ---------------------- -- #
 
 price_data = pd.read_csv('data/ohlc_data.csv')
 panel_data = pd.read_csv('data/panel_data.csv')
 optim_data = pd.read_csv('data/optimization_data.csv')
 
 # ------------------------------------------------------------------------------------------------ Tests -- #
+# ------------------------------------------------------------------------------------------------ ----- -- #
 
-# -- PLOT: 2 Timeseries with 2 Y-Axis -- #
+# -- ------------------------------------------------------------------ PLOT: 2 Timeseries with 2 Y-Axis -- #
 
 # p_x = {'data': price_data['timestamp'], 'x_ticks': 5}
 # p_y0 = {'data': price_data['close'], 'color': '#ABABAB', 'type': 'dash', 'size': 2.5, 'n_ticks': 5}
@@ -35,7 +37,7 @@ optim_data = pd.read_csv('data/optimization_data.csv')
 # plot_1 = vs.g_ts_2axis(p_x=p_x, p_y0=p_y0, p_y1=p_y1, p_theme=p_theme, p_dims=p_dims)
 # plot_1.show()
 
-# -- PLOT: Stacked Horizontal Bars -- #
+# -- --------------------------------------------------------------------- PLOT: Stacked Horizontal Bars -- #
 
 # p_y0 = {'data': panel_data['dd'], 'color': 'blue', 'type': 'dash', 'size': 2.5, 'n_ticks': 5}
 # p_y1 = {'data': panel_data['profit'], 'color': 'red', 'type': 'dash', 'size': 2.5, 'n_ticks': 5}
@@ -46,7 +48,7 @@ optim_data = pd.read_csv('data/optimization_data.csv')
 # plot_2 = vs.g_relative_bars(p_y0=p_y0, p_y1=p_y1, p_theme=p_theme, p_dims=p_dims)
 # plot_2.show()
 
-# -- PLOT: OHLC Price Chart with vertical lines -- #
+# -- -------------------------------------------------------- PLOT: OHLC Price Chart with vertical lines -- #
 
 p_ohlc = price_data.iloc[3:32, :].reset_index(drop=True)
 p_theme = {'color_1': '#ABABAB', 'color_2': '#ABCDED', 'font_size_1': 12, 'font_size_2': 16}
@@ -55,5 +57,3 @@ p_vlines = [pd.to_datetime('2020-01-01 22:05:00'), pd.to_datetime('2020-01-01 22
 
 plot_3 = vs.g_ohlc(p_ohlc=p_ohlc, p_theme=p_theme, p_dims=p_dims, p_vlines=p_vlines)
 plot_3.show()
-
-# -- PLOT: (Pending) 4D Surface with trace points -- #
