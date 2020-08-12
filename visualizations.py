@@ -39,8 +39,8 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
         diccionario con tema de visualizaciones
     p_dims: dict
         diccionario con tamanos para visualizaciones
-    p_vlines: dict
-        diccionario con fechas donde para visualizar lineas verticales
+    p_vlines: list
+        lista con fechas donde para visualizar lineas verticales
 
     Returns
     -------
@@ -53,8 +53,7 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
     p_timestamp = price_data['timestamp']
     p_theme = tema_base
     p_dims = dimensiones_base
-    p_vlines = [pd.to_datetime('2020-01-01 22:05:00'), pd.to_datetime('2020-01-01 22:10:00'),
-                pd.to_datetime('2020-01-01 22:20:00'), pd.to_datetime('2020-01-01 22:30:00')]
+    p_vlines = [pd.to_datetime('2020-01-01 22:05:00'), pd.to_datetime('2020-01-01 22:10:00')]
     """
 
     # Base de figura
@@ -101,8 +100,8 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
     # Dynamically add vertical lines according to the provided list of x dates.
     shapes_list = list()
     for i in p_vlines:
-        shapes_list.append({'type': 'line', 'fillcolor': 'blue',
-                            'line': {'color': 'blue', 'dash': 'dashdot'},
+        shapes_list.append({'type': 'line', 'fillcolor': p_theme['color_1'],
+                            'line': {'color': p_theme['color_1'], 'dash': 'dashdot'},
                             'x0': i, 'x1': i, 'xref': 'x',
                             'y0': min(p_ohlc['low']), 'y1': max(p_ohlc['high']), 'yref': 'y'})
 
