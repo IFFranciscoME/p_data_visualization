@@ -25,3 +25,14 @@
 
 # Deleted code
 # -- None
+
+# -------------------------------------------------------------------------- timestamp: 12:50 15.09.2020 -- #
+
+# Uploaded new code
+# -- g_ohlc
+
+# Modified code
+# -- None
+
+# Deleted code
+# -- None
