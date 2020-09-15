@@ -101,7 +101,7 @@ def g_mult_ts(p_series, p_ts, p_theme, p_dims):
                                                                   color=p_theme['color_1'])))
 
     # debugging
-    fig_g_mult_ts.show()
+    # fig_g_mult_ts.show()
 
     return fig_g_mult_ts
 
@@ -109,7 +109,7 @@ def g_mult_ts(p_series, p_ts, p_theme, p_dims):
 # -- -------------------------------------------------------- PLOT: OHLC Price Chart with Vertical Lines -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 
-def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
+def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None, p_labels=None):
     """
 
     Timeseries Candlestick with OHLC prices and figures for trades indicator
@@ -123,32 +123,44 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
     Parameters
     ----------
     p_ohlc: pd.DataFrame
-        debe de contener las columnas 'timestamp', 'open', 'high', 'low', 'close'
+        that contains the following float or int columns: 'timestamp', 'open', 'high', 'low', 'close'
     p_theme: dict
-        diccionario con tema de visualizaciones
+        with the theme for the visualizations
     p_dims: dict
-        diccionario con tamanos para visualizaciones
+        with sizes for visualizations
     p_vlines: list
-        lista con fechas donde para visualizar lineas verticales
+        with the dates where to visualize the vertical lines, format = pd.to_datetime('2020-01-01 22:15:00')
+    p_labels: dict
+        with main title and both x and y axes
 
     Returns
     -------
     fig_g_ohlc: plotly
-        objeto/diccionario tipo plotly para graficar
+        objet/dictionary to .show() and plot in the browser
 
     Debugging
     ---------
     p_ohlc = price_data
-    p_timestamp = price_data['timestamp']
-    p_theme = tema_base
-    p_dims = dimensiones_base
-    p_vlines = [pd.to_datetime('2020-01-01 22:05:00'), pd.to_datetime('2020-01-01 22:10:00')]
+    p_theme = p_theme
+    p_dims = p_dims
+    p_vlines = [pd.to_datetime('2020-01-01 22:35:00'), pd.to_datetime('2020-01-01 22:15:00')]
+    p_labels = {'title': 'Main title', 'x_title': 'x axis title', 'y_title': 'y axis title'}
     """
 
-    # Base de figura
+    # default value for lables to use in main title, and both x and y axis
+    if p_labels is None:
+        p_labels = {'title': 'Main title', 'x_title': 'x axis title', 'y_title': 'y axis title'}
+
+    # tick values calculation for simetry in y axes
+    y0_ticks_vals = np.arange(min(p_ohlc['low']), max(p_ohlc['high']),
+                              (max(p_ohlc['high']) - min(p_ohlc['low'])) / 10)
+    y0_ticks_vals = np.append(y0_ticks_vals, max(p_ohlc['high']))
+    y0_ticks_vals = np.round(y0_ticks_vals, 4)
+
+    # instantiate a figure object
     fig_g_ohlc = go.Figure()
 
-    # Agregar capa de figura de velas japonesas (candlestick)
+    # Add layer for OHLC candlestick chart
     fig_g_ohlc.add_trace(
         go.Candlestick(name='ohlc',
                        x=p_ohlc['timestamp'],
@@ -158,13 +170,13 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
                        close=p_ohlc['close'],
                        opacity=0.7))
 
-    # Layout de margen, titulos y ejes
+    # Layout for margin, and both x and y axes
     fig_g_ohlc.update_layout(
         margin=go.layout.Margin(l=50, r=50, b=20, t=50, pad=20),
-        xaxis=dict(title_text='Hora del dia', rangeslider=dict(visible=False)),
-        yaxis=dict(title_text='Precio del EurUsd'))
+        xaxis=dict(title_text=p_labels['x_title'], rangeslider=dict(visible=False)),
+        yaxis=dict(title_text=p_labels['y_title']))
 
-    # Color y fuente de texto en ejes
+    # Color and font type for text in axes
     fig_g_ohlc.update_layout(
         xaxis=dict(titlefont=dict(color=p_theme['color_1']),
                    tickfont=dict(color=p_theme['color_1'],
@@ -175,13 +187,7 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
                                  size=p_theme['font_size_1']),
                    showgrid=True))
 
-    # Formato de leyenda
-    fig_g_ohlc.update_layout(
-        legend=go.layout.Legend(x=.3, y=-.15, orientation='h',
-                                font=dict(size=p_theme['font_size_1'],
-                                          color=p_theme['color_2'])))
-
-    # Formato de tamanos
+    # Size of final plot according to desired dimensions
     fig_g_ohlc.layout.autosize = True
     fig_g_ohlc.layout.width = p_dims['width']
     fig_g_ohlc.layout.height = p_dims['height']
@@ -196,6 +202,21 @@ def g_ohlc(p_ohlc, p_theme, p_dims, p_vlines=None):
 
     # Update layout
     fig_g_ohlc.update_layout(shapes=shapes_list)
+
+    # Update layout for the background
+    fig_g_ohlc.update_layout(paper_bgcolor='white', plot_bgcolor='white',
+                                    yaxis=dict(tickvals=y0_ticks_vals, zeroline=False, automargin=True,
+                                               tickfont=dict(color='grey', size=p_theme['font_size_1'])),
+                                    xaxis=dict(tickfont=dict(color='grey', size=p_theme['font_size_1'])))
+
+    # Update layout for the y axis
+    fig_g_ohlc.update_yaxes(showgrid=True, gridwidth=.25, gridcolor='lightgrey')
+    fig_g_ohlc.update_xaxes(showgrid=False)
+
+    # Format to main title
+    fig_g_ohlc.update_layout(margin=go.layout.Margin(l=50, r=50, b=20, t=50, pad=20),
+                               title=dict(x=0.5, text='<b> ' + p_labels['title'] + ' </b>'),
+                               legend=go.layout.Legend(x=.3, y=-.15, orientation='h', font=dict(size=15)))
 
     # Show picture for debugging
     fig_g_ohlc.show()
